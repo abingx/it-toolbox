@@ -1,4 +1,5 @@
 import { Link } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 import { Star } from 'lucide-react'
 import type { ToolMeta } from '@toolbox/types/tool'
 import { useAppStore } from '@/store/app'
@@ -9,6 +10,7 @@ interface ToolCardProps {
 }
 
 export function ToolCard({ tool }: ToolCardProps) {
+  const { t } = useTranslation()
   const { isFavorited, toggleFavorite } = useAppStore()
   const favorited = isFavorited(tool.id)
   const IconComp = getIconComponent(tool.icon)
@@ -24,7 +26,7 @@ export function ToolCard({ tool }: ToolCardProps) {
           {IconComp && <IconComp className="w-4 h-4 text-accent" />}
         </div>
         <div className="flex items-center gap-1.5">
-          {tool.isNew && <span className="badge text-xs">NEW</span>}
+          {tool.isNew && <span className="badge text-xs">{t('toolCard.new')}</span>}
           <button
             onClick={e => { e.preventDefault(); toggleFavorite(tool.id) }}
             className="opacity-0 group-hover:opacity-100 transition-opacity duration-150 p-1 rounded hover:bg-bg-overlay"

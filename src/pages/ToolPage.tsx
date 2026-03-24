@@ -124,6 +124,19 @@ const toolComponents: Record<string, React.LazyExoticComponent<() => JSX.Element
   'color-space': lazy(() => import('@/tools/color-space/index')),
   // Phase 3.14 - 时间工具扩展
   'epoch-formats': lazy(() => import('@/tools/epoch-formats/index')),
+  // Phase 3.15 - 单位换算扩展
+  'aspect-ratio': lazy(() => import('@/tools/aspect-ratio/index')),
+  'css-unit-convert': lazy(() => import('@/tools/css-unit-convert/index')),
+  'roman-numeral': lazy(() => import('@/tools/roman-numeral/index')),
+  // Phase 3.16 - 网络进阶
+  'port-reference': lazy(() => import('@/tools/port-reference/index')),
+  'email-validate': lazy(() => import('@/tools/email-validate/index')),
+  'whois-lookup': lazy(() => import('@/tools/whois-lookup/index')),
+  'ssl-checker': lazy(() => import('@/tools/ssl-checker/index')),
+  'headers-check': lazy(() => import('@/tools/headers-check/index')),
+  // Phase 3.17 - 数字数学
+  'prime-checker': lazy(() => import('@/tools/prime-checker/index')),
+  'gcd-lcm': lazy(() => import('@/tools/gcd-lcm/index')),
 }
 
 function ToolSkeleton() {

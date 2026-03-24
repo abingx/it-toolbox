@@ -1,0 +1,195 @@
+import { useState, useCallback } from 'react'
+import { ArrowLeftRight, Copy, Check } from 'lucide-react'
+import { ToolLayout } from '@/components/tool/ToolLayout'
+import { useClipboard } from '@/hooks/useClipboard'
+import { meta } from './meta'
+
+const ROMAN_NUMERALS: [string, number][] = [
+  ['M', 1000],
+  ['CM', 900],
+  ['D', 500],
+  ['CD', 400],
+  ['C', 100],
+  ['XC', 90],
+  ['L', 50],
+  ['XL', 40],
+  ['X', 10],
+  ['IX', 9],
+  ['V', 5],
+  ['IV', 4],
+  ['I', 1],
+]
+
+function toRoman(num: number): string {
+  if (num < 1 || num > 3999999) return '超出范围'
+  
+  let result = ''
+  let remaining = num
+  
+  for (const [symbol, value] of ROMAN_NUMERALS) {
+    while (remaining >= value) {
+      result += symbol
+      remaining -= value
+    }
+  }
+  
+  return result || 'N'
+}
+
+function fromRoman(roman: string): number | null {
+  const romanUpper = roman.toUpperCase()
+  let result = 0
+  
+  for (let i = 0; i < romanUpper.length; i++) {
+    const current = ROMAN_NUMERALS.find(([s]) => s === romanUpper[i])?.[1]
+    if (!current) return null
+    
+    const next = ROMAN_NUMERALS.find(([s]) => i + 1 < romanUpper.length && s === romanUpper[i + 1])?.[1]
+    
+    if (next && current[1] < next[1]) {
+      return null
+    }
+    
+    result += current[1]
+  }
+  
+  return result
+}
+
+export default function RomanNumeralConverter() {
+  const [arabic, setArabic] = useState('')
+  const [roman, setRoman] = useState('')
+  const [mode, setMode] = useState<'toRoman' | 'fromRoman'>('toRoman')
+  const { copy, copied } = useClipboard()
+
+  const convertToRoman = useCallback(() => {
+    const num = parseInt(arabic)
+    if (isNaN(num)) {
+      setRoman('请输入有效数字')
+      return
+    }
+    const result = toRoman(num)
+    setRoman(result)
+  }, [arabic])
+
+  const convertToArabic = useCallback(() => {
+    const result = fromRoman(roman)
+    if (result === null) {
+      setArabic('无效的罗马数字')
+      return
+    }
+    setArabic(result.toString())
+  }, [roman])
+
+  const swap = useCallback(() => {
+    if (mode === 'toRoman') {
+      setMode('fromRoman')
+      setArabic(roman)
+      setRoman('')
+    } else {
+      setMode('toRoman')
+      setRoman(arabic)
+      setArabic('')
+    }
+  }, [mode, arabic, roman])
+
+  const reset = () => {
+    setArabic('')
+    setRoman('')
+    setMode('toRoman')
+  }
+
+  const outputValue = mode === 'toRoman' ? roman : arabic
+
+  return (
+    <ToolLayout meta={meta} onReset={reset} outputValue={outputValue}>
+      <div className="flex items-center gap-2 mb-4">
+        <button
+          onClick={() => setMode('toRoman')}
+          className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+            mode === 'toRoman'
+              ? 'bg-accent text-bg-base'
+              : 'bg-bg-surface text-text-secondary hover:bg-bg-raised border border-border-base'
+          }`}
+        >
+          阿拉伯数字 → 罗马数字
+        </button>
+        <button
+          onClick={() => setMode('fromRoman')}
+          className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+            mode === 'fromRoman'
+              ? 'bg-accent text-bg-base'
+              : 'bg-bg-surface text-text-secondary hover:bg-bg-raised border border-border-base'
+          }`}
+        >
+          罗马数字 → 阿拉伯数字
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
+        <div className="space-y-3">
+          <label className="text-xs font-medium text-text-muted uppercase tracking-wider block">
+            {mode === 'toRoman' ? '阿拉伯数字' : '罗马数字'}
+          </label>
+          <input
+            type="number"
+            value={mode === 'toRoman' ? arabic : ''}
+            onChange={e => mode === 'toRoman' && setArabic(e.target.value)}
+            placeholder={mode === 'toRoman' ? '输入阿拉伯数字' : '输入罗马数字'}
+            className="w-full px-4 py-3 rounded-xl bg-bg-surface border border-border-base text-text-primary text-lg font-mono focus:outline-none focus:border-accent"
+            disabled={mode === 'fromRoman'}
+          />
+          {mode === 'toRoman' && (
+            <p className="text-xs text-text-muted">范围: 1 - 3,999,999</p>
+          )}
+        </div>
+
+        <div className="flex items-center justify-center pt-8">
+          <button
+            onClick={swap}
+            className="p-3 rounded-xl bg-bg-surface border border-border-base hover:bg-bg-raised hover:border-accent transition-colors"
+            title="交换转换方向"
+          >
+            <ArrowLeftRight className="w-5 h-5 text-text-secondary" />
+          </button>
+        </div>
+
+        <div className="space-y-3">
+          <label className="text-xs font-medium text-text-muted uppercase tracking-wider block">
+            {mode === 'toRoman' ? '罗马数字' : '阿拉伯数字'}
+          </label>
+          <div className="relative">
+            <input
+              type="text"
+              value={mode === 'toRoman' ? roman : arabic}
+              onChange={e => mode === 'fromRoman' && setRoman(e.target.value.toUpperCase())}
+              placeholder={mode === 'toRoman' ? '转换结果' : '转换结果'}
+              className="w-full px-4 py-3 pr-12 rounded-xl bg-bg-surface border border-border-base text-text-primary text-lg font-mono focus:outline-none focus:border-accent"
+              readOnly={mode === 'toRoman'}
+            />
+            {outputValue && (
+              <button
+                onClick={() => copy(outputValue)}
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-lg hover:bg-bg-raised"
+              >
+                {copied ? <Check className="w-4 h-4 text-accent" /> : <Copy className="w-4 h-4 text-text-muted" />}
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="p-4 rounded-xl bg-bg-surface border border-border-base">
+        <h3 className="text-sm font-medium text-text-primary mb-3">罗马数字对照表</h3>
+        <div className="grid grid-cols-4 gap-2 text-xs">
+          {ROMAN_NUMERALS.map(([symbol, value]) => (
+            <div key={symbol} className="p-2 rounded bg-bg-raised text-center">
+              <div className="font-mono font-bold text-accent">{symbol}</div>
+              <div className="text-text-muted">{value}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </ToolLayout>
+  )
+}

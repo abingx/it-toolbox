@@ -1126,6 +1126,128 @@ export const toolRegistry: ToolMeta[] = [
     icon: 'Clock',
     isNew: true,
   },
+
+  // ─── Phase 3.8: 单位换算扩展(批次2) ─────────────────────────────────────────
+
+  {
+    id: 'aspect-ratio',
+    name: '宽高比计算',
+    nameEn: 'Aspect Ratio Calculator',
+    description: '像素尺寸→比例，常见分辨率参考，裁剪建议',
+    category: 'converter',
+    tags: ['aspect', 'ratio', 'resolution', 'pixel', 'screen'],
+    keywords: ['宽高比', '分辨率', '像素', '比例', '屏幕'],
+    icon: 'RectangleHorizontal',
+    isNew: true,
+  },
+  {
+    id: 'css-unit-convert',
+    name: 'CSS单位换算',
+    nameEn: 'CSS Unit Converter',
+    description: 'px/rem/em/vw/vh/pt/pc互转，基准字号可配置',
+    category: 'converter',
+    tags: ['css', 'unit', 'px', 'rem', 'em', 'vw', 'vh', 'convert'],
+    keywords: ['CSS', '单位', '像素', '换算', 'rem', 'em'],
+    icon: 'Ruler',
+    isNew: true,
+  },
+  {
+    id: 'roman-numeral',
+    name: '罗马数字转换',
+    nameEn: 'Roman Numeral Converter',
+    description: '阿拉伯数字↔罗马数字，支持大数',
+    category: 'converter',
+    tags: ['roman', 'numeral', 'convert', 'arabic'],
+    keywords: ['罗马数字', '转换', '阿拉伯数字'],
+    icon: 'Hash',
+    isNew: true,
+  },
+
+  // ─── Phase 3.9: 网络进阶 ───────────────────────────────────────────────────
+
+  {
+    id: 'port-reference',
+    name: '常用端口参考',
+    nameEn: 'Port Reference',
+    description: '常见服务端口号查询，按协议/服务分类',
+    category: 'network',
+    tags: ['port', 'network', 'protocol', 'service', 'reference'],
+    keywords: ['端口', '网络', '协议', '服务', 'TCP', 'UDP'],
+    icon: 'Network',
+    isNew: true,
+  },
+  {
+    id: 'email-validate',
+    name: '邮箱格式验证',
+    nameEn: 'Email Validator',
+    description: 'RFC 5322合规验证，批量验证',
+    category: 'network',
+    tags: ['email', 'validate', 'verify', 'format', 'rfc5322'],
+    keywords: ['邮箱', '验证', '格式', '电子邮件'],
+    icon: 'Mail',
+    isNew: true,
+  },
+
+  // ─── Phase 3.10: 数字&数学 ─────────────────────────────────────────────────
+
+  {
+    id: 'prime-checker',
+    name: '质数检测',
+    nameEn: 'Prime Number Checker',
+    description: '检测质数，分解质因数，生成质数序列',
+    category: 'converter',
+    tags: ['prime', 'number', 'factor', 'math', 'isPrime'],
+    keywords: ['质数', '素数', '因数', '数学'],
+    icon: 'Hash',
+    isNew: true,
+  },
+  {
+    id: 'gcd-lcm',
+    name: 'GCD/LCM计算',
+    nameEn: 'GCD/LCM Calculator',
+    description: '最大公约数/最小公倍数，多数支持',
+    category: 'converter',
+    tags: ['gcd', 'lcm', 'math', 'number', 'divisor', 'multiple'],
+    keywords: ['最大公约数', '最小公倍数', '数学', '约分'],
+    icon: 'Calculator',
+    isNew: true,
+  },
+
+  // ─── Phase 3.11: 网络进阶(批次2补充) ───────────────────────────────────────
+
+  {
+    id: 'whois-lookup',
+    name: 'WHOIS查询',
+    nameEn: 'WHOIS Lookup',
+    description: '域名注册信息查询',
+    category: 'network',
+    tags: ['whois', 'domain', 'lookup', 'register', 'dns'],
+    keywords: ['WHOIS', '域名', '查询', '注册', 'DNS'],
+    icon: 'Search',
+    isNew: true,
+  },
+  {
+    id: 'ssl-checker',
+    name: 'SSL证书检测',
+    nameEn: 'SSL Certificate Checker',
+    description: '检测域名SSL有效期/颁发机构/SANs',
+    category: 'network',
+    tags: ['ssl', 'tls', 'certificate', 'https', 'security'],
+    keywords: ['SSL', '证书', 'HTTPS', '安全', '加密'],
+    icon: 'Shield',
+    isNew: true,
+  },
+  {
+    id: 'headers-check',
+    name: 'HTTP安全头检测',
+    nameEn: 'HTTP Security Headers Checker',
+    description: '检测目标URL的安全头覆盖情况',
+    category: 'network',
+    tags: ['http', 'headers', 'security', 'csp', 'hsts', 'xss'],
+    keywords: ['HTTP', '安全头', 'Header', '安全', '检测'],
+    icon: 'ShieldCheck',
+    isNew: true,
+  },
 ]
 
 export const searchIndex = new Fuse(toolRegistry, {
